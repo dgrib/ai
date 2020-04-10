@@ -28,9 +28,9 @@ class Ship():
 		чтобы при нажатии обеих клавиш со стрелками атрибут rect.centerx сначала увеличивался,
 		а потом уменьшался. В результате корабль остается на месте."""
 		# Обновляется атрибут center, не rect.
-		if self.moving_right:
+		if self.moving_right and self.rect.right < self.screen_rect.right:
 			self.center += self.ai_settings.ship_speed_factor
-		if self.moving_left:
+		if self.moving_left and self.rect.left > 0:
 			self.center -= self.ai_settings.ship_speed_factor
 		# Обновление атрибута rect на основании self.center.
 		self.rect.centerx = self.center
