@@ -15,6 +15,13 @@ class Ship():
 		"""Every new ship emerges beside the screen lower edge"""
 		self.rect.centerx = self.screen_rect.centerx
 		self.rect.bottom = self.screen_rect.bottom
+		#Movoing flag
+		self.moving_right = False
+
+	def update(self):
+		"""Renews ship position taking into account the flag"""
+		if self.moving_right:
+			self.rect.centerx += 1
 
 	def blitme(self):
 		"""Draws a ship into the current position"""
