@@ -17,11 +17,17 @@ class Ship():
 		self.rect.bottom = self.screen_rect.bottom
 		#Movoing flag
 		self.moving_right = False
+		self.moving_left = False
 
 	def update(self):
 		"""Renews ship position taking into account the flag"""
+		"""В update() используются два отдельных блока if вместо elif ,
+		чтобы при нажатии обеих клавиш со стрелками атрибут rect.centerx сначала увеличивался,
+		а потом уменьшался. В результате корабль остается на месте."""
 		if self.moving_right:
 			self.rect.centerx += 1
+		if self.moving_left:
+			self.rect.centerx -= 1
 
 	def blitme(self):
 		"""Draws a ship into the current position"""
