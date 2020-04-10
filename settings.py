@@ -1,5 +1,7 @@
 class Settings():
 	"""Класс для хранения всех настроек игры Alien Invasion."""
+	ship_speed_factor = 1.5 #ship settings
+
 	def __init__(self):
 		"""Инициализирует настройки игры."""
 		# Параметры экрана
@@ -7,3 +9,4 @@ class Settings():
 		self.screen_height = 800
 		# Назначение цвета фона.
 		self.bg_color = (230, 230, 230)
+	
