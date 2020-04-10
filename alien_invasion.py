@@ -2,6 +2,9 @@ import sys
 
 import pygame
 from settings import Settings
+from ship import Ship
+
+#http://pixabay.com/ изображения тут
 
 def run_game():
 
@@ -11,6 +14,8 @@ def run_game():
 	screen = pygame.display.set_mode(
 		(ai_settings.screen_width, ai_settings.screen_height))
 	pygame.display.set_caption("Alien Invasion")
+	# Создание корабля.
+	ship = Ship(screen)
 
 	# Запуск основного цикла игры.
 	while True:
@@ -20,6 +25,9 @@ def run_game():
 				sys.exit()
 		# При каждом проходе цикла перерисовывается экран.
 		screen.fill(ai_settings.bg_color)
+		"""Чтобы перерисовать корабль на экране, мы вызываем ship.blitme() после заполнения
+		фона, так что корабль выводится поверх фона"""
+		ship.blitme()
 		# Отображение последнего прорисованного экрана.
 		pygame.display.flip()
 
