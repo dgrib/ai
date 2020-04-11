@@ -16,11 +16,11 @@ class Bullet(Sprite):
         self.rect = pygame.Rect(0, 0, ai_settings.bullet_width, ai_settings.bullet_height)
         """Прямоугольник инициализируется в точке (0, 0), но в следующих двух строках
         он перемещается в нужное место, так как позиция пули зависит от позиции корабля."""
-        self.rect.centerx = ship.rect.centerx
-        self.rect.top = ship.rect.top
+        self.rect.centery = ship.rect.centery
+        self.rect.right = ship.rect.right
 
         # bullet position reserves in float format
-        self.y = float(self.rect.y)
+        self.x = float(self.rect.x)
 
         self.color = ai_settings.bullet_color
         self.speed_factor = ai_settings.bullet_speed_factor
@@ -28,9 +28,9 @@ class Bullet(Sprite):
     def update(self):
         """Moves the bullet upwards"""
         # renews bullet pos in float format
-        self.y -= self.speed_factor
+        self.x += self.speed_factor
         # renews rect pos
-        self.rect.y = self.y
+        self.rect.x = self.x
     
     def draw_bullet(self):
         """Draw the bullet on the screen"""
