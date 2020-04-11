@@ -36,6 +36,11 @@ def run_game():
 		каждого спрайта в группе. Строка bullets.update() вызывает bullet.update() для
 		каждой пули, включенной в группу bullets ."""
 		bullets.update()
+		# Removing out of screen bullets
+		for bullet in bullets.copy(): # search in copy but delete in bullets
+			if bullet.rect.bottom <= 0:
+				bullets.remove(bullet)
+		# print(len(bullets))
 		# При каждом проходе цикла перерисовывается экран.
 		gf.update_screen(ai_settings, screen, ship, bullets)
 
