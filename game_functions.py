@@ -35,7 +35,7 @@ def check_events(ai_settings, screen, ship, bullets):
             check_keyup_events(event, ship)
             
 def update_screen(ai_settings, screen, ship, bullets):
-
+    """renewed positions of game elements are used in deriving(вывода) new screen"""
     screen.fill(ai_settings.bg_color)
     # Все пули выводятся позади изображений корабля и пришельцев.
     for bullet in bullets.sprites():
@@ -45,3 +45,12 @@ def update_screen(ai_settings, screen, ship, bullets):
     ship.blitme()
     # Отображение последнего прорисованного экрана.
     pygame.display.flip()
+
+def update_bullets(bullets):
+    """Renews bullets positions and removes out of screen bullets"""
+    # renews bullets positions
+    bullets.update()
+	# Removing out of screen bullets
+    for bullet in bullets.copy(): # search in copy but delete in bullets
+        if bullet.rect.bottom <= 0:
+            bullets.remove(bullet)
