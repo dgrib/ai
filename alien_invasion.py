@@ -2,6 +2,7 @@ import pygame
 from pygame.sprite import Group
 from settings import Settings
 from ship import Ship
+from alien import Alien
 import game_functions as gf
 
 #http://pixabay.com/ изображения тут
@@ -22,6 +23,9 @@ def run_game():
 	группа пуль не создавалась при каждом проходе цикла."""
 	bullets = Group()
 
+	# creation an alien
+	alien = Alien(ai_settings, screen)
+
 	# Запуск основного цикла игры.
 	while True:
 		"""Объект bullets передается методам check_events() и update_screen() .
@@ -38,6 +42,6 @@ def run_game():
 		gf.update_bullets(bullets)
 		# print(len(bullets))
 		# При каждом проходе цикла перерисовывается экран.
-		gf.update_screen(ai_settings, screen, ship, bullets)
+		gf.update_screen(ai_settings, screen, ship, alien, bullets)
 
 run_game()
