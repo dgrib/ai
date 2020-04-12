@@ -67,20 +67,22 @@ def fire_bullet(ai_settings, screen, ship, bullets):
 def create_fleet(ai_settings, screen, aliens):
     """Creates alien fleet"""
     alien = Alien(ai_settings, screen)
-
     # Создание пришельца и вычисление количества пришельцев в ряду.
-    # Интервал между соседними пришельцами равен одной ширине пришельца.
-    """ширина пришельца определяется по его атрибуту rect а полученное
-    значение сохраняется в alien_width , чтобы избежать лишних обращений к атрибуту rect ."""
-    alien_width = alien.rect.width
-    available_space_x = ai_settings.screen_width - 2 * alien_width
-    #Функция int() отсекает дробную часть числа, округление в меньшую сторону.
-    number_aliens_x = int(available_space_x / (2 * alien_width)) 
+    number_aliens_x = get_number_aliens_x(ai_settings, alien.rect.width)
 
     # creating first row of aliens
     for alien_number in range(number_aliens_x):
-        # creating an alien and placing it in the row
-        alien = Alien(ai_settings, screen)
-        alien.x = alien_width + 2 * alien_width * alien_number
-        alien.rect.x = alien.x
-        aliens.add(alien)
+        create_alien(ai_settings, screen, aliens, alien_number)
+
+def get_number_aliens_x(ai_settings, alien_width):
+    available_space_x = ai_settings.screen_width - 2 * alien_width
+    number_aliens_x = int(available_space_x / (2 * alien_width))
+    return number_aliens_x
+
+def create_alien(ai_settings, screen, aliens, alien_number):
+    """ ctreates an alien and place it in a row"""
+    alien = Alien(ai_settings, screen)
+    alien_width = alien.rect.width
+    alien.x = alien_width + 2 * alien_width * alien_number
+    alien.rect.x = alien.x
+    aliens.add(alien)
