@@ -22,7 +22,7 @@ def run_game():
 	группа пуль не создавалась при каждом проходе цикла."""
 	bullets = Group()
 	aliens = Group()
-	gf.create_fleet(ai_settings, screen, aliens)
+	gf.create_fleet(ai_settings, screen, ship, aliens)
 
 	# Запуск основного цикла игры.
 	while True:
