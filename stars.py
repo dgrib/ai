@@ -2,6 +2,7 @@ import pygame
 from settings import Settings
 from pygame.sprite import Sprite
 from pygame.sprite import Group
+from random import randint
 
 class Star(Sprite):
     """Represents one star"""
@@ -30,11 +31,14 @@ def get_number_stars_x(ai_settings, star_width):
 
 def create_star(ai_settings, screen, aliens, star_number, row_number):
     """ ctreates an alien and place it in a row"""
+    random_number = randint(-50,50)
     star = Star(ai_settings, screen)
     star_width = star.rect.width
     star.x = star_width + 2 * star_width * star_number
     star.rect.x = star.x
+    star.rect.x += random_number
     star.rect.y = star.rect.height + 2 * star.rect.height * row_number
+    star.rect.y += random_number
     stars.add(star)
 
 def get_number_rows(ai_settings, star_height):
@@ -47,15 +51,18 @@ screen = pygame.display.set_mode((ai_settings.screen_width, ai_settings.screen_h
 pygame.display.set_caption("Stars")
 star = Star(ai_settings, screen)
 stars = Group()
+clock = pygame.time.Clock()
+number_stars_x = get_number_stars_x(ai_settings, star.rect.width)
+number_rows = get_number_rows(ai_settings, star.rect.height)
+for row_number in range(number_rows):
+    for star_number in range(number_stars_x):
+        create_star(ai_settings, screen, stars, star_number, row_number)
+stars.draw(screen)
 
 while True:
+    # clock.tick(1) # delay
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
-    number_stars_x = get_number_stars_x(ai_settings, star.rect.width)
-    number_rows = get_number_rows(ai_settings, star.rect.height)
-    for row_number in range(number_rows):
-        for star_number in range(number_stars_x):
-            create_star(ai_settings, screen, stars, star_number, row_number)
-    stars.draw(screen)
+
     pygame.display.flip()
