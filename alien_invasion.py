@@ -39,6 +39,7 @@ def run_game():
 		каждой пули, включенной в группу bullets ."""
 		gf.update_bullets(bullets)
 		# print(len(bullets))
+		gf.update_aliens(ai_settings, aliens)
 		# При каждом проходе цикла перерисовывается экран.
 		gf.update_screen(ai_settings, screen, ship, aliens, bullets)
 
