@@ -1,3 +1,4 @@
+import sys
 import pygame
 from drop_settings import Settings
 from pygame.sprite import Sprite
@@ -32,14 +33,14 @@ def get_number_drops_x(ai_settings, drop_width):
 
 def create_drop(ai_settings, screen, drops, drop_number, row_number):
     """ ctreates a drop and place it in a row"""
-    random_number = randint(-50,50)
+    # random_number = randint(-50,50)
     drop = Drop(ai_settings, screen)
     drop_width = drop.rect.width
     drop.x = drop_width + 2 * drop_width * drop_number
     drop.rect.x = drop.x
-    drop.rect.x += random_number
+    # drop.rect.x += random_number
     drop.rect.y = drop.rect.height + 2 * drop.rect.height * row_number
-    drop.rect.y += random_number
+    # drop.rect.y += random_number
     drops.add(drop)
 
 def get_number_rows(ai_settings, drop_height):
@@ -50,7 +51,12 @@ def move_drops_down(ai_settings, aliens):
     """Moves drops down"""
     for drop in drops.sprites():
         drop.rect.y += ai_settings.drop_speed_factor
-        
+
+def remove_drops_under_screen(ai_settings, screen):
+    for drop in drops.copy(): # search in copy but delete in bullets
+        if drop.rect.top >= 835:
+            drops.remove(drop)
+
 pygame.init()
 ai_settings = Settings()
 screen = pygame.display.set_mode((ai_settings.screen_width, ai_settings.screen_height))
@@ -63,16 +69,20 @@ number_rows = get_number_rows(ai_settings, drop.rect.height)
 for row_number in range(number_rows):
     for drop_number in range(number_drops_x):
         create_drop(ai_settings, screen, drops, drop_number, row_number)
-drops.draw(screen)
+drops_amount = number_drops_x * (number_rows - 1)
 
 
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
-    
-    move_drops_down(ai_settings, screen)
 
+    move_drops_down(ai_settings, screen)
+    remove_drops_under_screen(ai_settings, screen)
     drops.draw(screen)
+    
+    if len(drops) < drops_amount:
+        for drop_number in range(number_drops_x):
+            create_drop(ai_settings, screen, drops, drop_number, row_number=0)
 
     pygame.display.flip()
