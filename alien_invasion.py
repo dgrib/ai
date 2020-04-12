@@ -37,7 +37,7 @@ def run_game():
 		"""Вызов update() для группы bullets приводит к автоматическому вызову update() для
 		каждого спрайта в группе. Строка bullets.update() вызывает bullet.update() для
 		каждой пули, включенной в группу bullets ."""
-		gf.update_bullets(bullets)
+		gf.update_bullets(aliens, bullets)
 		# print(len(bullets))
 		gf.update_aliens(ai_settings, aliens)
 		# При каждом проходе цикла перерисовывается экран.
