@@ -46,6 +46,11 @@ def get_number_rows(ai_settings, drop_height):
     number_rows = int(ai_settings.screen_height / drop_height)
     return number_rows
 
+def move_drops_down(ai_settings, aliens):
+    """Moves drops down"""
+    for drop in drops.sprites():
+        drop.rect.y += ai_settings.drop_speed_factor
+        
 pygame.init()
 ai_settings = Settings()
 screen = pygame.display.set_mode((ai_settings.screen_width, ai_settings.screen_height))
@@ -65,5 +70,9 @@ while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
+    
+    move_drops_down(ai_settings, screen)
+
+    drops.draw(screen)
 
     pygame.display.flip()
