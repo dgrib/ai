@@ -107,6 +107,7 @@ def update_aliens(ai_settings, stats, screen, ship, aliens, bullets):
     # check collisions ship-alien
     if pygame.sprite.spritecollideany(ship, aliens):
         ship_hit(ai_settings, stats, screen, ship, aliens, bullets)
+    check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets)
 
 def check_fleet_edges(ai_settings, aliens):
     """ Reacts when an alient reaches the screen edge"""
@@ -130,16 +131,25 @@ def check_bullet_alien_collision(ai_settings, screen, ship, aliens, bullets):
 
 def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
     """Operate ship-alien collision"""
-    # Diminishing ship_left
-    stats.ship_left -= 1
+    if stats.ship_left > 0:
+        # Diminishing ship_left
+        stats.ship_left -= 1
+        # Cleaning aliens and bullets
+        aliens.empty()
+        bullets.empty()
+        #Creating new fleet and shoip position
+        create_fleet(ai_settings, screen, ship, aliens)
+        ship.center_ship()
+        # pause
+        sleep(0.5)
+    else:
+        stats.game_active = False
 
-    # Cleaning aliens and bullets
-    aliens.empty()
-    bullets.empty()
-
-    #Creating new fleet and shoip position
-    create_fleet(ai_settings, screen, ship, aliens)
-    ship.center_ship()
-
-    # pause
-    sleep(0.5)
+def check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets):
+    """Checks if an alien got the bottom edge"""
+    screen_rect = screen.get_rect()
+    for alien in aliens.sprites():
+        if alien.rect.bottom >= screen_rect.bottom:
+            # Happens the same as if collision ship-alien
+            ship_hit(ai_settings, stats, screen, ship, aliens, bullets)
+            break

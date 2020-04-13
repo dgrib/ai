@@ -33,17 +33,19 @@ def run_game():
 		В check_events() он используется при обработке клавиши «пробел», а в update_screen()
 		необходимо перерисовать выводимые на экран пули"""
 		gf.check_events(ai_settings, screen, ship, bullets) # checks data from playes
-		"""Позиция корабля будет обновляться после проверки событий клавиатуры,
-		но перед обновлением экрана. Таким образом, позиция корабля обновляется
-		в ответ на действия пользователя и будет использоваться при перерисовке корабля на экране"""
-		ship.update() #renews ship position
-		"""Вызов update() для группы bullets приводит к автоматическому вызову update() для
-		каждого спрайта в группе. Строка bullets.update() вызывает bullet.update() для
-		каждой пули, включенной в группу bullets ."""
-		gf.update_bullets(ai_settings, screen, ship, aliens, bullets)
-		# print(len(bullets))
-		gf.update_aliens(ai_settings, stats, screen, ship, aliens, bullets)
-		# При каждом проходе цикла перерисовывается экран.
-		gf.update_screen(ai_settings, screen, ship, aliens, bullets)
+		
+		if stats.game_active:
+			"""Позиция корабля будет обновляться после проверки событий клавиатуры,
+			но перед обновлением экрана. Таким образом, позиция корабля обновляется
+			в ответ на действия пользователя и будет использоваться при перерисовке корабля на экране"""
+			ship.update() #renews ship position
+			"""Вызов update() для группы bullets приводит к автоматическому вызову update() для
+			каждого спрайта в группе. Строка bullets.update() вызывает bullet.update() для
+			каждой пули, включенной в группу bullets ."""
+			gf.update_bullets(ai_settings, screen, ship, aliens, bullets)
+			# print(len(bullets))
+			gf.update_aliens(ai_settings, stats, screen, ship, aliens, bullets)
+			# При каждом проходе цикла перерисовывается экран.
+			gf.update_screen(ai_settings, screen, ship, aliens, bullets)
 
 run_game()
