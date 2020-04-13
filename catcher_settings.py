@@ -1,6 +1,7 @@
 class Settings():
     catcher_speed_factor = 1
     ball_falls_factor = 1
+    ball_limit = 3
 
     def __init__(self):
         # Screen parameters

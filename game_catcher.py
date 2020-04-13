@@ -4,6 +4,8 @@ from catcher_settings import Settings
 from catcher import Catcher
 from ball import Ball
 from pygame.sprite import Group
+from time import sleep
+from catcher_stats import GameStats
 
 def check_events():
     for event in pygame.event.get():
@@ -37,14 +39,19 @@ def collisions_catcher_ball(ai_settings):
     if len(balls) == 0:
         create_ball(ai_settings, screen)
 
-def update_balls(ai_settings, screen, balls):
-    balls.update()
-    for ball in balls.copy():
-        if ball.rect.bottom >= ai_settings.screen_height + ball.rect.height:
-            balls.remove(ball)
-            create_ball(ai_settings, screen)
-    collisions_catcher_ball(ai_settings)
-    balls.draw(screen)
+def update_balls(ai_settings, screen, stats, balls):
+    if stats.ball_left > 0:
+        balls.update()
+        for ball in balls.copy():
+            if ball.rect.bottom >= ai_settings.screen_height + ball.rect.height:
+                balls.remove(ball)
+                stats.ball_left -= 1
+                sleep(1)
+                create_ball(ai_settings, screen)
+        collisions_catcher_ball(ai_settings)
+        balls.draw(screen)
+    else:
+        stats.game_active = False
 
 pygame.init()
 ai_settings = Settings()
@@ -55,17 +62,22 @@ screen.fill(ai_settings.bg_color)
 catcher = Catcher(ai_settings, screen)
 catchers = Group()
 catchers.add(catcher)
+stats = GameStats(ai_settings)
 
 balls = Group()
 
 create_ball(ai_settings, screen)
 
 while True:
-    screen.fill(ai_settings.bg_color)
-    check_events()    
-    catchers.update()
-    catchers.draw(screen)
+    check_events()
 
-    update_balls(ai_settings, screen, balls)
+    if stats.game_active:
+        screen.fill(ai_settings.bg_color)
+        
+        catchers.update()
+        catchers.draw(screen)
 
-    pygame.display.flip()
+        update_balls(ai_settings, screen, stats, balls)
+
+        pygame.display.flip()
+    
