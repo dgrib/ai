@@ -1,6 +1,7 @@
 import pygame
+from pygame.sprite import Sprite
 
-class Catcher():
+class Catcher(Sprite):
 
     def __init__(self, ai_settings, screen):
         super().__init__()
