@@ -4,6 +4,7 @@ from settings import Settings
 from ship import Ship
 import game_functions as gf
 from game_stats import GameStats
+from button import Button
 
 #http://pixabay.com/ изображения тут
 
@@ -15,6 +16,8 @@ def run_game():
 	screen = pygame.display.set_mode(
 		(ai_settings.screen_width, ai_settings.screen_height))
 	pygame.display.set_caption("Alien Invasion")
+	#Creating Play button
+	
 	# Creating an instance for keeping game statistics
 	stats = GameStats(ai_settings)
 	# Создание корабля.
@@ -26,6 +29,7 @@ def run_game():
 	bullets = Group()
 	aliens = Group()
 	gf.create_fleet(ai_settings, screen, ship, aliens)
+	play_button = Button(ai_settings, screen, 'Play')
 
 	# Запуск основного цикла игры.
 	while True:
@@ -33,6 +37,8 @@ def run_game():
 		В check_events() он используется при обработке клавиши «пробел», а в update_screen()
 		необходимо перерисовать выводимые на экран пули"""
 		gf.check_events(ai_settings, screen, ship, bullets) # checks data from playes
+		# При каждом проходе цикла перерисовывается экран.
+		gf.update_screen(ai_settings, screen, stats, ship, aliens, bullets, play_button)
 		
 		if stats.game_active:
 			"""Позиция корабля будет обновляться после проверки событий клавиатуры,
@@ -45,7 +51,5 @@ def run_game():
 			gf.update_bullets(ai_settings, screen, ship, aliens, bullets)
 			# print(len(bullets))
 			gf.update_aliens(ai_settings, stats, screen, ship, aliens, bullets)
-			# При каждом проходе цикла перерисовывается экран.
-			gf.update_screen(ai_settings, screen, ship, aliens, bullets)
-
+			
 run_game()

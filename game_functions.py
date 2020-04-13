@@ -35,7 +35,7 @@ def check_events(ai_settings, screen, ship, bullets):
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, ship)
             
-def update_screen(ai_settings, screen, ship, aliens, bullets):
+def update_screen(ai_settings, screen, stats, ship, aliens, bullets, play_button):
     """renewed positions of game elements are used in deriving(вывода) new screen"""
     screen.fill(ai_settings.bg_color)
     # Все пули выводятся позади изображений корабля и пришельцев.
@@ -47,6 +47,8 @@ def update_screen(ai_settings, screen, ship, aliens, bullets):
     """Когда вы вызываете метод draw() для группы, Pygame автоматически выводит
     каждый элемент группы в позиции, определяемой его атрибутом rect ."""
     aliens.draw(screen)
+    if not stats.game_active:
+        play_button.draw_button()
     # Отображение последнего прорисованного экрана.
     pygame.display.flip()
 
