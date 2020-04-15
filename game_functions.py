@@ -47,6 +47,7 @@ def check_play_button(ai_settings, screen, stats, play_button, ship, target,
 def start_game(ai_settings, screen, stats, ship, target, bullets):
     #Reloads game stats
     pygame.mouse.set_visible(False)
+    ai_settings.initialise_dynamic_settings()
     stats.reset_stats()
     stats.game_active = True
     target.center_target()
@@ -89,6 +90,7 @@ def update_bullets(ai_settings, bullets, target, stats):
                 stats.miss_left -= 1
             elif pygame.sprite.spritecollideany(target, bullets):
                 bullets.remove(bullet)
+                ai_settings.increase_speed()
     else:
         stats.game_active = False
         pygame.mouse.set_visible(True)
