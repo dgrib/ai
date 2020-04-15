@@ -33,7 +33,7 @@ def run_game():
 		"""Объект bullets передается методам check_events() и update_screen() .
 		В check_events() он используется при обработке клавиши «пробел», а в update_screen()
 		необходимо перерисовать выводимые на экран пули"""
-		gf.check_events(ai_settings, screen, stats, play_button, ship, bullets) # checks data from playes
+		gf.check_events(ai_settings, screen, stats, play_button, ship, target, bullets) # checks data from playes
 		# При каждом проходе цикла перерисовывается экран.
 		gf.update_screen(ai_settings, screen, stats, ship, bullets, target, play_button)
 
@@ -45,7 +45,7 @@ def run_game():
 			"""Вызов update() для группы bullets приводит к автоматическому вызову update() для
 			каждого спрайта в группе. Строка bullets.update() вызывает bullet.update() для
 			каждой пули, включенной в группу bullets ."""
-			gf.update_bullets(ai_settings, bullets)
+			gf.update_bullets(ai_settings, bullets, target, stats)
 			# print(len(bullets))
 			
 			gf.update_target(ai_settings, target)

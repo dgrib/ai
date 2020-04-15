@@ -17,8 +17,9 @@ class Settings():
 		self.bullets_allowed = 3
 		# rect param
 		self.target_width = 50
-		self.target_height = 100
+		self.target_height = 300
 		self.target_speed_factor = 1
 		self.target_color = 200, 60, 60
 		self.target_direction = 1
+		self.miss_limit = 3
 	
