@@ -4,6 +4,8 @@ from settings import Settings
 from ship import Ship
 import game_functions as gf
 from target import Target
+from button import Button
+from game_stats import GameStats
 
 #http://pixabay.com/ изображения тут
 
@@ -16,8 +18,10 @@ def run_game():
 		(ai_settings.screen_width, ai_settings.screen_height))
 	pygame.display.set_caption("Alien Invasion")
 	# Создание корабля.
+	stats = GameStats(ai_settings)
 	ship = Ship(ai_settings, screen)
 	target = Target(ai_settings, screen)
+	play_button = Button(ai_settings, screen, 'Play')
 
 	# Creatin a group for bullet containing
 	"""Эта группа создается за пределами цикла while , чтобы новая 
@@ -30,17 +34,20 @@ def run_game():
 		В check_events() он используется при обработке клавиши «пробел», а в update_screen()
 		необходимо перерисовать выводимые на экран пули"""
 		gf.check_events(ai_settings, screen, ship, bullets) # checks data from playes
-		"""Позиция корабля будет обновляться после проверки событий клавиатуры,
-		но перед обновлением экрана. Таким образом, позиция корабля обновляется
-		в ответ на действия пользователя и будет использоваться при перерисовке корабля на экране"""
-		ship.update() #renews ship position
-		"""Вызов update() для группы bullets приводит к автоматическому вызову update() для
-		каждого спрайта в группе. Строка bullets.update() вызывает bullet.update() для
-		каждой пули, включенной в группу bullets ."""
-		gf.update_bullets(ai_settings, bullets)
-		# print(len(bullets))
 		# При каждом проходе цикла перерисовывается экран.
-		gf.update_target(ai_settings, target)
-		gf.update_screen(ai_settings, screen, ship, bullets, target)
+		gf.update_screen(ai_settings, screen, stats, ship, bullets, target, play_button)
 
+		if stats.game_active:
+			"""Позиция корабля будет обновляться после проверки событий клавиатуры,
+			но перед обновлением экрана. Таким образом, позиция корабля обновляется
+			в ответ на действия пользователя и будет использоваться при перерисовке корабля на экране"""
+			ship.update() #renews ship position
+			"""Вызов update() для группы bullets приводит к автоматическому вызову update() для
+			каждого спрайта в группе. Строка bullets.update() вызывает bullet.update() для
+			каждой пули, включенной в группу bullets ."""
+			gf.update_bullets(ai_settings, bullets)
+			# print(len(bullets))
+			
+			gf.update_target(ai_settings, target)
+		
 run_game()
