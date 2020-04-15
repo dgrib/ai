@@ -7,7 +7,7 @@ class Ship():
 		self.ai_settings = ai_settings
 
 		"""Load ship image , making rectangle"""
-		self.image = pygame.image.load('images/ship.bmp')
+		self.image = pygame.image.load('images/ship_r.bmp')
 		"""Функция возвращает поверхность, представляющую корабль;
 		полученный объект сохраняется в self.image"""
 		
