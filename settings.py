@@ -15,4 +15,10 @@ class Settings():
 		self.bullet_height = 3
 		self.bullet_color = 60, 60, 60
 		self.bullets_allowed = 3
+		# rect param
+		self.target_width = 50
+		self.target_height = 100
+		self.target_speed_factor = 1
+		self.target_color = 200, 60, 60
+		self.target_direction = 1
 	

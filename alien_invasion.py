@@ -3,6 +3,7 @@ from pygame.sprite import Group
 from settings import Settings
 from ship import Ship
 import game_functions as gf
+from target import Target
 
 #http://pixabay.com/ изображения тут
 
@@ -16,6 +17,7 @@ def run_game():
 	pygame.display.set_caption("Alien Invasion")
 	# Создание корабля.
 	ship = Ship(ai_settings, screen)
+	target = Target(ai_settings, screen)
 
 	# Creatin a group for bullet containing
 	"""Эта группа создается за пределами цикла while , чтобы новая 
@@ -38,6 +40,7 @@ def run_game():
 		gf.update_bullets(ai_settings, bullets)
 		# print(len(bullets))
 		# При каждом проходе цикла перерисовывается экран.
-		gf.update_screen(ai_settings, screen, ship, bullets)
+		gf.update_target(ai_settings, target)
+		gf.update_screen(ai_settings, screen, ship, bullets, target)
 
 run_game()
