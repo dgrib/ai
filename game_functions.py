@@ -62,7 +62,7 @@ def start_game(ai_settings, screen, stats, aliens, ship, bullets):
     create_fleet(ai_settings, screen, ship, aliens)
     ship.center_ship()
 
-def update_screen(ai_settings, screen, stats, ship, aliens, bullets, play_button):
+def update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, play_button):
     """renewed positions of game elements are used in deriving(вывода) new screen"""
     screen.fill(ai_settings.bg_color)
     # Все пули выводятся позади изображений корабля и пришельцев.
@@ -74,6 +74,9 @@ def update_screen(ai_settings, screen, stats, ship, aliens, bullets, play_button
     """Когда вы вызываете метод draw() для группы, Pygame автоматически выводит
     каждый элемент группы в позиции, определяемой его атрибутом rect ."""
     aliens.draw(screen)
+    # Printing score
+    #вызываем show_score() перед отображением кнопки Play
+    sb.show_score()
     if not stats.game_active:
         play_button.draw_button()
     # Отображение последнего прорисованного экрана.

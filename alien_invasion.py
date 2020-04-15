@@ -4,6 +4,7 @@ from settings import Settings
 from ship import Ship
 import game_functions as gf
 from game_stats import GameStats
+from scoreboard import Scoreboard
 from button import Button
 
 #http://pixabay.com/ изображения тут
@@ -20,6 +21,8 @@ def run_game():
 	
 	# Creating an instance for keeping game statistics
 	stats = GameStats(ai_settings)
+	#создаем экземпляр sb после создания экземпляра stats
+	sb = Scoreboard(ai_settings, screen, stats)
 	# Создание корабля.
 	ship = Ship(ai_settings, screen)
 
@@ -38,7 +41,7 @@ def run_game():
 		необходимо перерисовать выводимые на экран пули"""
 		gf.check_events(ai_settings, screen, stats, play_button, ship, aliens, bullets) # checks data from playes
 		# При каждом проходе цикла перерисовывается экран.
-		gf.update_screen(ai_settings, screen, stats, ship, aliens, bullets, play_button)
+		gf.update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, play_button)
 		
 		if stats.game_active:
 			"""Позиция корабля будет обновляться после проверки событий клавиатуры,
