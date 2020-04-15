@@ -2,7 +2,7 @@ import sys
 import pygame
 from bullet import Bullet
 
-def check_keydown_events(event, ai_settings, screen, ship, bullets):
+def check_keydown_events(event, ai_settings, stats, target, screen, ship, bullets):
     """Rects keydowns"""
     if event.key == pygame.K_UP:
         ship.moving_up = True
@@ -11,8 +11,12 @@ def check_keydown_events(event, ai_settings, screen, ship, bullets):
         то программа обнаруживает два разных события"""
     elif event.key == pygame.K_DOWN:
         ship.moving_down = True
+    elif event.key == pygame.K_q:
+        sys.exit()
     elif event.key == pygame.K_SPACE:
         fire_bullet(ai_settings, screen, ship, bullets)
+    elif event.key == pygame.K_p and not stats.game_active:
+        start_game(ai_settings, screen, stats, ship, target, bullets)
 
 def check_keyup_events(event, ship):
     """Reacts keyups"""
@@ -27,7 +31,7 @@ def check_events(ai_settings, screen, stats, play_button, ship, target, bullets)
         if event.type == pygame.QUIT:
             sys.exit()
         elif event.type == pygame.KEYDOWN:
-            check_keydown_events(event, ai_settings, screen, ship, bullets)
+            check_keydown_events(event, ai_settings, stats, target, screen, ship, bullets)
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, ship)
         elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -38,12 +42,17 @@ def check_play_button(ai_settings, screen, stats, play_button, ship, target,
         bullets, mouse_x, mouse_y):
     """Loads new game when pushing play_button"""
     if play_button.rect.collidepoint(mouse_x, mouse_y):
-        #Reloads game stats
-        stats.reset_stats()
-        stats.game_active = True
-        target.center_target()
-        bullets.empty()
-        ship.center_ship()
+        start_game(ai_settings, screen, stats, ship, target, bullets)
+        
+def start_game(ai_settings, screen, stats, ship, target, bullets):
+    #Reloads game stats
+    pygame.mouse.set_visible(False)
+    stats.reset_stats()
+    stats.game_active = True
+    target.center_target()
+    bullets.empty()
+    ship.center_ship()
+
 
 def update_screen(ai_settings, screen, stats, ship, bullets, target, play_button):
     """renewed positions of game elements are used in deriving(вывода) new screen"""
@@ -82,6 +91,7 @@ def update_bullets(ai_settings, bullets, target, stats):
                 bullets.remove(bullet)
     else:
         stats.game_active = False
+        pygame.mouse.set_visible(True)
 
 def fire_bullet(ai_settings, screen, ship, bullets):
     # creating a new bullet and including it in the "bullets" group
