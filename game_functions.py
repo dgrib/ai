@@ -31,6 +31,7 @@ def check_events(ai_settings, screen, stats, play_button, ship, aliens, bullets,
     """Operates key push and mouse events"""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
+            saving_record_file(stats)
             sys.exit()
         elif event.type == pygame.KEYDOWN:
             check_keydown_events(event, ai_settings, stats, aliens, screen, ship, bullets, sb)
@@ -48,6 +49,12 @@ def check_play_button(ai_settings, screen, stats, play_button, ship, aliens,
     if button_clicked and not stats.game_active:
         ai_settings.initialize_dynamic_settings()
         start_game(ai_settings, screen, stats, aliens, ship, bullets, sb)
+
+def saving_record_file(stats):
+    """Saving High_score into file"""
+    filename = 'record.txt'
+    with open(filename, 'w') as file_obj:
+        file_obj.write(str(stats.high_score))
 
 def start_game(ai_settings, screen, stats, aliens, ship, bullets, sb):
     """Starts game if button play or p-key"""

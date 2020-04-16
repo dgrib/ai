@@ -5,9 +5,11 @@ class GameStats():
         self.reset_stats()
         self.game_active = False
         # Record are not to be nullify
-        """Так как рекорд не должен сбрасываться при повторном запуске,
-        значение high_score инициализируется в __init__() , а не в reset_stats()"""
-        self.high_score = 0
+        # """Так как рекорд не должен сбрасываться при повторном запуске,
+        # значение high_score инициализируется в __init__() , а не в reset_stats()"""
+        # self.high_score = 0
+        self.read_record_file()
+
     
     def reset_stats(self):
         """Initialise statistics that changes during game"""
@@ -18,3 +20,8 @@ class GameStats():
         #Чтобы уровень сбрасывался в начале каждой
         #игры, инициализируйте его в reset_stats()
         self.level = 1
+    
+    def read_record_file(self):
+        filename = 'record.txt'
+        with open(filename) as file_obj:
+            self.high_score = int(file_obj.read())
