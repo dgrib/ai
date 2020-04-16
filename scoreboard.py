@@ -15,6 +15,12 @@ class Scoreboard():
         self.text_color = (30, 30, 30)
         # создается экземпляр объекта шрифта
         self.font = pygame.font.SysFont(None, 48)
+        self.prep_images()
+    
+    """Также переместите четыре метода, 
+    вызываемых в методе __init__() класса Scoreboard, 
+    в метод prep_images() для сокращения длины __init__()."""
+    def prep_images(self):
         # Prepares score image.
         self.prep_score()
         self.prep_high_score()
@@ -22,6 +28,7 @@ class Scoreboard():
         #собираемся создать группу кораблей,
         # программа импортирует классы Group и Ship
         self.prep_ships()
+
 
     def prep_score(self):
         """Преобразует текущий счет в графическое изображение."""

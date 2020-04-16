@@ -34,7 +34,8 @@ def check_events(ai_settings, screen, stats, play_button, ship, aliens, bullets,
             saving_record_file(stats)
             sys.exit()
         elif event.type == pygame.KEYDOWN:
-            check_keydown_events(event, ai_settings, stats, aliens, screen, ship, bullets, sb)
+            check_keydown_events(event, ai_settings, stats, aliens,
+                            screen, ship, bullets, sb)
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, ship)
         elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -64,13 +65,17 @@ def start_game(ai_settings, screen, stats, aliens, ship, bullets, sb):
     stats.reset_stats()
     stats.game_active = True
     #Reloads scores and level
-    sb.prep_score()
-    sb.prep_high_score()
-    sb.prep_level()
-    #Чтобы игрок видел, сколько попыток у него в начале игры,
-    # мы вызываем prep_ships() при запуске новой игры
-    sb.prep_ships()
+    sb.prep_images()
+    # sb.prep_score()
+    # sb.prep_high_score()
+    # sb.prep_level()
+    # #Чтобы игрок видел, сколько попыток у него в начале игры,
+    # # мы вызываем prep_ships() при запуске новой игры
+    # sb.prep_ships()
+    clean_and_create_fleet(ai_settings, screen, stats, aliens, ship, bullets, sb)
 
+def clean_and_create_fleet(ai_settings, screen, stats, aliens, ship, bullets, sb):
+    """Cleans aliens and bullets, creates fleet"""
     aliens.empty()
     bullets.empty()
     create_fleet(ai_settings, screen, ship, aliens)
@@ -183,13 +188,17 @@ def check_bullet_alien_collision(ai_settings, screen, stats, sb, ship, aliens, b
         check_high_score(stats, sb)
     # If all the fleet destroyed the next level begins
     if len(aliens) == 0:
-        # destroy existing bullets and creating a new fleet
-        bullets.empty() # removes oll sprites from a group
-        ai_settings.increase_speed()
-        #Increase level
-        stats.level += 1
-        sb.prep_level()
-        create_fleet(ai_settings, screen, ship, aliens)
+        start_new_level(ai_settings, screen, stats, sb, ship, aliens, bullets)
+
+def start_new_level(ai_settings, screen, stats, sb, ship, aliens, bullets):
+    # destroy existing bullets and creating a new fleet
+    bullets.empty() # removes oll sprites from a group
+    ai_settings.increase_speed()
+    #Increase level
+    stats.level += 1
+    sb.prep_level()
+    create_fleet(ai_settings, screen, ship, aliens)
+
 
 def ship_hit(ai_settings, stats, screen, sb, ship, aliens, bullets):
     """Operate ship-alien collision"""
@@ -202,13 +211,7 @@ def ship_hit(ai_settings, stats, screen, sb, ship, aliens, bullets):
         #Метод prep_ships()вызывается после уменьшения значения ships_left,
         # так что при каждой потере корабля выводится правильное количество изображений
         sb.prep_ships()
-        # Cleaning aliens and bullets
-        aliens.empty()
-        bullets.empty()
-        #Creating new fleet and shoip position
-        create_fleet(ai_settings, screen, ship, aliens)
-        ship.center_ship()
-        # pause
+        clean_and_create_fleet(ai_settings, screen, stats, aliens, ship, bullets, sb)
         sleep(0.5)
     else:
         stats.game_active = False
