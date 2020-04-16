@@ -18,6 +18,8 @@ class Settings():
 		self.fleet_drop_speed = 10
 		# Game accelerate factor
 		self.speedup_scale = 1.1
+		# Cost of aliens
+		self.score_scale = 1.5
 		"""Значения, которые остаются неизменными,
 		по-прежнему инициализируются в методе __init__()"""
 
@@ -38,6 +40,8 @@ class Settings():
 		self.alien_points = 50
 
 	def increase_speed(self):
+		"""Increases game speed settings and value of alien"""
 		self.ship_speed_factor *= self.speedup_scale
 		self.bullet_speed_factor *= self.speedup_scale
 		self.alien_speed_factor *= self.speedup_scale
+		self.alien_points = int(self.alien_points * self.score_scale)
