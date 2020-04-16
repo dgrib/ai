@@ -82,7 +82,7 @@ def update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, play_bu
     # Отображение последнего прорисованного экрана.
     pygame.display.flip()
 
-def update_bullets(ai_settings, screen, ship, aliens, bullets):
+def update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets):
     """Renews bullets positions and removes out of screen bullets"""
     # renews bullets positions
     bullets.update()
@@ -91,7 +91,7 @@ def update_bullets(ai_settings, screen, ship, aliens, bullets):
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
     # check if a bullet hit an alien, removes (True,True) the bullet and the alien
-    check_bullet_alien_collision(ai_settings, screen, ship, aliens, bullets)
+    check_bullet_alien_collision(ai_settings, screen, stats, sb, ship, aliens, bullets)
 
 
 def fire_bullet(ai_settings, screen, ship, bullets):
@@ -154,8 +154,17 @@ def change_fleet_direction(ai_settings, aliens):
         alien.rect.y += ai_settings.fleet_drop_speed
     ai_settings.fleet_direction *= -1
 
-def check_bullet_alien_collision(ai_settings, screen, ship, aliens, bullets):
-    collisions = pygame.sprite.groupcollide(bullets, aliens, False, True)
+def check_bullet_alien_collision(ai_settings, screen, stats, sb, ship, aliens, bullets):
+    #словарь collisions . Программа проверяет, 
+    # существует ли словарь, и если существует — стоимость пришельца добавляется к счету
+    collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
+    # любая пуля, столкнувшаяся с пришельцем, становится ключом словаря collisions
+    #С каждой пулей связывается значение — список пришельцев, участвующих в коллизии.
+    if collisions:
+        for aliens in collisions.values():
+            stats.score += ai_settings.alien_points * len(aliens)
+        #prep_score() создает новое изображение для обновленного счета
+        sb.prep_score()
     if len(aliens) == 0:
         # destroy existing bullets and creating a new fleet
         bullets.empty() # removes oll sprites from a group
