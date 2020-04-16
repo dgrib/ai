@@ -16,6 +16,7 @@ class Scoreboard():
         # Prepares score image.
         self.prep_score()
         self.prep_high_score()
+        self.prep_level()
 
     def prep_score(self):
         """Преобразует текущий счет в графическое изображение."""
@@ -41,12 +42,23 @@ class Scoreboard():
         self.high_score_rect = self.high_score_image.get_rect()
         self.high_score_rect.centerx = self.screen_rect.centerx
         self.high_score_rect.top = self.score_rect.top
+
+    def prep_level(self):
+        """Преобразует уровень в графическое изображение."""
+        self.level_image = self.font.render(str(self.stats.level), True,
+                    self.text_color, self.ai_settings.bg_color)
+        # LEver appears under score
+        self.level_rect = self.level_image.get_rect()
+        self.level_rect.right = self.score_rect.right
+        self.level_rect.top = self.level_rect.bottom + 30
     
     def show_score(self):
         """Prints the score on the screen."""
         #Метод выводит счет на экран в позиции, определяемой score_rect
         self.screen.blit(self.score_image, self.score_rect)
         self.screen.blit(self.high_score_image, self.high_score_rect)
+        self.screen.blit(self.level_image, self.level_rect)
+
 
 
 
