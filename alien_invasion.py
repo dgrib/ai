@@ -53,6 +53,6 @@ def run_game():
 			каждой пули, включенной в группу bullets ."""
 			gf.update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets)
 			# print(len(bullets))
-			gf.update_aliens(ai_settings, stats, screen, ship, aliens, bullets)
+			gf.update_aliens(ai_settings, stats, screen, sb, ship, aliens, bullets)
 			
 run_game()

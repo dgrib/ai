@@ -1,8 +1,12 @@
 import pygame
+from pygame.sprite import Sprite
 
-class Ship():
+#сделать так, чтобы класс Ship наследовал от Sprite ,
+#  — это необходимо для создания группы кораблей (показать жизни)
+class Ship(Sprite):
 	def __init__(self, ai_settings, screen):
 		"""Инициализирует корабль и задает его начальную позицию."""
+		super().__init__()
 		self.screen = screen
 		self.ai_settings = ai_settings
 

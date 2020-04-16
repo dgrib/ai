@@ -60,6 +60,9 @@ def start_game(ai_settings, screen, stats, aliens, ship, bullets, sb):
     sb.prep_score()
     sb.prep_high_score()
     sb.prep_level()
+    #Чтобы игрок видел, сколько попыток у него в начале игры,
+    # мы вызываем prep_ships() при запуске новой игры
+    sb.prep_ships()
 
     aliens.empty()
     bullets.empty()
@@ -135,14 +138,14 @@ def get_number_rows(ai_settings, ship_height, alien_height):
     number_rows = int(available_space_y / (2 * alien_height))
     return number_rows
 
-def update_aliens(ai_settings, stats, screen, ship, aliens, bullets):
+def update_aliens(ai_settings, stats, screen, sb, ship, aliens, bullets):
     """ CHeck if an alien by the screen edge and then renews positions of all aliens in the fleet"""
     check_fleet_edges(ai_settings, aliens)
     aliens.update()
     # check collisions ship-alien
     if pygame.sprite.spritecollideany(ship, aliens):
-        ship_hit(ai_settings, stats, screen, ship, aliens, bullets)
-    check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets)
+        ship_hit(ai_settings, stats, screen, sb, ship, aliens, bullets)
+    check_aliens_bottom(ai_settings, stats, screen, sb, ship, aliens, bullets)
 
 def check_fleet_edges(ai_settings, aliens):
     """ Reacts when an alient reaches the screen edge"""
@@ -181,11 +184,17 @@ def check_bullet_alien_collision(ai_settings, screen, stats, sb, ship, aliens, b
         sb.prep_level()
         create_fleet(ai_settings, screen, ship, aliens)
 
-def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
+def ship_hit(ai_settings, stats, screen, sb, ship, aliens, bullets):
     """Operate ship-alien collision"""
     if stats.ship_left > 0:
         # Diminishing ship_left
         stats.ship_left -= 1
+        # Renews ship_left info.
+        #Метод prep_ships() также вызывается при столкновении пришельца с кораблем,
+        #чтобы изображение обновлялось при потере корабля
+        #Метод prep_ships()вызывается после уменьшения значения ships_left,
+        # так что при каждой потере корабля выводится правильное количество изображений
+        sb.prep_ships()
         # Cleaning aliens and bullets
         aliens.empty()
         bullets.empty()
@@ -198,13 +207,13 @@ def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
         stats.game_active = False
         pygame.mouse.set_visible(True)
 
-def check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets):
+def check_aliens_bottom(ai_settings, stats, screen, sb, ship, aliens, bullets):
     """Checks if an alien got the bottom edge"""
     screen_rect = screen.get_rect()
     for alien in aliens.sprites():
         if alien.rect.bottom >= screen_rect.bottom:
             # Happens the same as if collision ship-alien
-            ship_hit(ai_settings, stats, screen, ship, aliens, bullets)
+            ship_hit(ai_settings, stats, screen, sb, ship, aliens, bullets)
             break
 
 def check_high_score(stats, sb):
