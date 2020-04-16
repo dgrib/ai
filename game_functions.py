@@ -56,7 +56,6 @@ def start_game(ai_settings, screen, stats, aliens, ship, bullets):
     #Reloads game stats
     stats.reset_stats()
     stats.game_active = True
-
     aliens.empty()
     bullets.empty()
     create_fleet(ai_settings, screen, ship, aliens)
@@ -165,6 +164,9 @@ def check_bullet_alien_collision(ai_settings, screen, stats, sb, ship, aliens, b
             stats.score += ai_settings.alien_points * len(aliens)
         #prep_score() создает новое изображение для обновленного счета
         sb.prep_score()
+        #Функция check_high_score() должна вызываться при
+        # #каждом попадании в пришельца после обновления счета
+        check_high_score(stats, sb)
     if len(aliens) == 0:
         # destroy existing bullets and creating a new fleet
         bullets.empty() # removes oll sprites from a group
@@ -196,3 +198,10 @@ def check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets):
             # Happens the same as if collision ship-alien
             ship_hit(ai_settings, stats, screen, ship, aliens, bullets)
             break
+
+def check_high_score(stats, sb):
+    """Checks if the new record appeared."""
+    if stats.score > stats.high_score:
+        stats.high_score = stats.score
+        #вызываем prep_high_score() для обновления изображения рекорда
+        sb.prep_high_score()
